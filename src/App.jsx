@@ -6,6 +6,7 @@ import data from './data'
 function App() {
   const [count, setCount] = useState(0)
   const [selectedAnswer,setSelectedAnswer] = useState(null)
+  const [score,setScore] = useState(0)
   
   
   let currentQuestion = data[count]
@@ -16,25 +17,41 @@ function App() {
 
   function handleAnswerClick(answer){
     setSelectedAnswer(answer)
+    if(answer === currentQuestion.correct){
+      alert("Congrats dum dum")
+      setScore(score => score+10)
+      setTimeout(setCount(c => c+1, 2000))
+      nextQuestion()
+     
+    }else {
+      // alert("wrong answer dum dum")
+      setTimeout(setCount(c => c+1),2000)
+    }
+  
+ 
+    
   }
 
   return (
     <>
-    <button onClick={handleNextClick}>Next Question</button> 
-    <p>{count+1}/{data.length}</p>
+         <button onClick={handleNextClick}>Next Question</button> 
+          <p>{count+1}/{data.length}</p>
 
-    
-      
-
-          <div className='question-container'>
-            <p className='question'> {currentQuestion.question} </p>
+          <div className='score'>
+            Score: {score}
           </div>
 
+          <div className='question-container'>
+            <p className='question'> 
+              {currentQuestion.question} 
+            </p>
+          </div>
+          
           <div className='answers-container'>
             {currentQuestion.answers.map(
               (answer,i)=> (
                 <button key={i} onClick={()=> handleAnswerClick(answer) } 
-                 style={{color :  selectedAnswer=== answer && currentQuestion.correct=== answer ? "green" : "red" }}  >
+                 style={{color :  selectedAnswer=== answer ? currentQuestion.correct=== answer ? "green" : "red":"" }}  >
                   {answer}
                 </button>))}  
           </div> 
